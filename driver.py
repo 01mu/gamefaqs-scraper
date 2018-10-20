@@ -8,7 +8,6 @@ from lxml import html
 
 class GFSBoard:
     ''' Get thread information for a specific board '''
-
     def get_max_page(self):
         ''' Get max page pagination option from thread list '''
         a = self.data.find('</select> of ') + 13
