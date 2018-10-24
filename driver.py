@@ -113,6 +113,113 @@ class BoardThread:
         self.replies = replies
         self.link = link
 
-gfs = GFSBoard('234547-super-smash-bros-ultimate')
-gfs.get_site('234547-super-smash-bros-ultimate', 0)
-threads = gfs.find()
+class GFSThread:
+    def get_info(self, needle, end):
+        ''' Get info for a specific thread attribute (author or date) '''
+        attrs = []
+        hay = self.data
+        length = len(needle) + 1
+
+        while hay.find('class="name menu_toggle">') != -1:
+            f = hay.find(needle) + (length - 1)
+            end_loc = hay[f : ].find(end)
+            attrs.append(hay[f : f + end_loc])
+            hay = hay[f + length : ]
+
+        return attrs
+
+    def find(self):
+        ''' Find post attributes '''
+        posts = []
+
+        authors = self.get_info('class="name menu_toggle"><b>', '</b>')
+        dates = self.get_info('<span class="post_time" title="', '">')
+
+        self.trim_date(dates)
+
+        self.remove_poll()
+        self.remove_signatures()
+
+        bodies = self.get_posts()
+
+        for i in range(len(authors)):
+            post = ThreadPost(authors[i], dates[i], bodies[i])
+
+            posts.append(post)
+
+        return posts
+
+    def trim_date(self, dates):
+        ''' Remove &nbsp; from dates '''
+        for i in range(len(dates)):
+            dates[i] = dates[i].replace("&nbsp;", " ")
+
+    def get_posts(self):
+        ''' Remove citations (quotes) '''
+        posts = []
+        hay = self.data
+
+        while hay.find('<div class="msg_body_box"') != -1:
+            f = hay.find('<div class="msg_body_box"')
+            thing = hay[f : ].find('</div><div class="msg_below_clear">')
+            post = hay[f : f + thing]
+            get = post.rfind(">") + 1
+            posts.append(post[get : ])
+            hay = hay[f + thing : ]
+
+        return posts
+
+    def remove_signatures(self):
+        ''' Remove signatures from posts '''
+        hay = self.data
+
+        while hay.find('<div class="signature"><div class="sig_text">') != -1:
+            f = hay.find('<div class="signature"><div class="sig_text">')
+            thing = hay[f : ].find('</div></div>')
+            hay = hay[ : f ] + hay[f + thing + len('</div></div>') : ]
+
+        self.data = hay
+
+    def remove_poll(self):
+        ''' Check if the OP includes a poll and remove it '''
+        pos = self.data.find('<div class="board_poll">')
+
+        if pos != -1:
+            end_loc = self.data[pos : ].find('<div class="poll_foot"></div>')
+            self.data = self.data[ : pos] + self.data[pos + end_loc + 51 : ]
+
+    def get_site(self):
+        ''' Get site text with board and page '''
+        request = urllib2.Request(self.thread)
+        request.add_header('User-Agent', self.USER_AGENT)
+        self.data = urllib2.urlopen(request).read()
+
+        #with open('site', 'r') as myfile:
+        #    self.data = myfile.read()
+
+    ''' Posts and authors for a given thread '''
+    def __init__(self, thread):
+        ''' Get thread URL '''
+        self.thread = thread
+        self.USER_AGENT = 'Mozilla/5.0'
+
+class ThreadPost:
+    ''' Post info for a thread '''
+    def __init__(self, author, date, body):
+        self.author = author
+        self.date = date
+        self.body = body
+
+
+#gfs = GFSBoard('234547-super-smash-bros-ultimate')
+#gfs.get_site('234547-super-smash-bros-ultimate', 0)
+#threads = gfs.find()
+
+thread = GFSThread('')
+thread.get_site()
+posts = thread.find()
+
+for i in range(len(posts)):
+    print(posts[i].author)
+    print(posts[i].date)
+    print(posts[i].body)
