@@ -3,7 +3,7 @@ Scrape board and thread information from GameFAQs. Repeated use leads to a tempo
 
 ## Get threads from a board
 ### Input (`driver.py`):
-```
+```python
 from gamefaqs_scraper import GFSBoard
 
 board = GFSBoard()
@@ -32,7 +32,7 @@ Pages: <max pagination>
 ```
 ## Get posts from a thread
 ### Input (`driver.py`):
-```
+```python
 from gamefaqs_scraper import GFSThread
 
 thread = GFSThread()
