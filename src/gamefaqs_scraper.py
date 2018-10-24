@@ -108,7 +108,7 @@ class GFSBoard:
 
     def __init__(self):
         ''' Initialize with base URL and user agent '''
-        self.USER_AGENT = 'Mozilla/5.0'
+        self.USER_AGENT = 'https://github.com/01mu/gamefaqs-scraper'
         self.BASE_URL = 'https://gamefaqs.gamespot.com/boards/'
 
 class GFSThread:
@@ -220,5 +220,5 @@ class GFSThread:
     ''' Posts and authors for a given thread '''
     def __init__(self):
         ''' Get thread URL '''
-        self.USER_AGENT = 'Mozilla/5.0'
+        self.USER_AGENT = 'https://github.com/01mu/gamefaqs-scraper'
         self.BASE_URL = 'https://gamefaqs.gamespot.com/boards/'
