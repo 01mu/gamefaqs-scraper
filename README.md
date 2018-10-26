@@ -1,5 +1,5 @@
 # gamefaqs-scraper
-Scrape board and thread information from GameFAQs. Repeated use leads to a temporary IP block from GameFAQs.
+Scrape board and thread information from GameFAQs. Repeated use may lead to a temporary IP block from GameFAQs.
 
 ## Get threads from a board
 ### Input (`driver.py`):
