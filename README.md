@@ -1,8 +1,7 @@
 # gamefaqs-scraper
 Scrape board and thread information from GameFAQs. Repeated use may lead to a temporary IP block from GameFAQs.
-
-## Get threads from a board
-### Input (`driver.py`):
+## Usage
+### Get threads from a board
 ```python
 from gamefaqs_scraper import GFSBoard
 
@@ -16,7 +15,6 @@ for i in range(len(threads)):
     print(threads[i].title + "\n" + threads[i].author + "\n" + threads[i].last
         + "\n" + threads[i].replies + "\n" + threads[i].link + "\n")
 ```
-### Output:
 ```
 Pages: <max pagination>
 
@@ -30,8 +28,7 @@ Pages: <max pagination>
 <Author>
 ...
 ```
-## Get posts from a thread
-### Input (`driver.py`):
+### Get posts from a thread
 ```python
 from gamefaqs_scraper import GFSThread
 
@@ -45,7 +42,6 @@ print("Pages: " + str(thread.max_page) + "\n")
 for i in range(len(posts)):
     print(posts[i].author + "\n" + posts[i].date + "\n" + posts[i].body + "\n")
 ```
-### Output:
 ```
 Pages: <max pagination>
 
